@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 import "./SemaphoreAst.sol";
 import {BordaCountLib} from "../libs/tally/BordaCountLib.sol";
@@ -139,6 +138,7 @@ contract ElectAnonAst is SemaphoreAst {
         atState(States.Register)
         onlyOwner
     {
+        require(getLeavesNum() + _num <= 1000, "Total number of voters cannot exceed 1000");
         insertRoot(_root, _num);
     }
 

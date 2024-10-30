@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 import "./SemaphoreOpt.sol";
 import {TidemanLib as TallyLib} from "./libs/tally/TidemanLib.sol";
@@ -157,6 +156,7 @@ contract ElectAnon is SemaphoreOpt {
         atState(States.Register)
         onlyOwner
     {
+        require(getLeavesNum() + _identityCommitments.length <= 1000, "Total number of voters cannot exceed 1000");
         insertLeaves(_identityCommitments, _root);
         emit VoterIdCommitsAdded(msg.sender, _identityCommitments, _root);
     }
