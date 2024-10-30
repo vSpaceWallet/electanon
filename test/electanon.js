@@ -357,6 +357,25 @@ contract("ElectAnon", (accounts) => {
       web3.utils.toBN(this.contract.address).toString(16)
     );
   });
+
+  it("should not allow adding more than 1000 voters", async () => {
+    let idCommits = [];
+    for (let i = 0; i < 1001; i++) {
+      let identity = genIdentity();
+      let identityCommitment = genIdentityCommitment(identity);
+      idCommits.push(identityCommitment.toString());
+    }
+    let level = await this.contract.getTreeLevel();
+    let tree = await genTree(level, idCommits);
+    let root = await tree.root();
+    try {
+      await this.contract.addVoters(idCommits, root, {
+        from: this.owner,
+      });
+    } catch (e) {
+      expect(e.message.endsWith("Total number of voters cannot exceed 1000"));
+    }
+  });
 });
 contract("ElectAnon commit", (accounts) => {
   before(async () => {

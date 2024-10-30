@@ -82,6 +82,7 @@ contract SemaphoreAst is Verifier, Ownable {
     }
 
     function insertRoot(uint256 _root, uint256 _num) internal {
+        require(leavesNum + _num <= 1000, "Total number of voters cannot exceed 1000");
         leavesNum = _num;
         root = _root;
     }
